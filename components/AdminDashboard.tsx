@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { HistoryItem } from '../types';
 import { getHistory, clearHistory, deleteHistoryItem } from '../services/historyService';
-import { Lock, Search, Trash2, X, BarChart, Calendar, Globe, Monitor } from 'lucide-react';
+import { resetIpUsage } from '../services/ipService';
+import { Lock, Search, Trash2, X, BarChart, Calendar, Globe, Monitor, RefreshCw } from 'lucide-react';
 
 interface AdminDashboardProps {
   onClose: () => void;
@@ -40,6 +41,13 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
     if (confirm('모든 데이터를 초기화하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) {
       clearHistory();
       setHistory([]);
+    }
+  };
+
+  const handleResetMyIp = () => {
+    if (confirm('현재 접속 중인 브라우저의 일일 분석 횟수 제한을 초기화하시겠습니까?')) {
+      resetIpUsage();
+      alert('초기화되었습니다. 다시 분석할 수 있습니다.');
     }
   };
 
@@ -158,12 +166,21 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ onClose }) => {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <button 
-              onClick={handleClearAll}
-              className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm font-medium"
-            >
-              <Trash2 className="w-4 h-4" /> 전체 데이터 초기화
-            </button>
+            
+            <div className="flex gap-2">
+              <button 
+                onClick={handleResetMyIp}
+                className="flex items-center gap-2 px-4 py-2 text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors text-sm font-medium"
+              >
+                <RefreshCw className="w-4 h-4" /> 내 IP 제한 초기화
+              </button>
+              <button 
+                onClick={handleClearAll}
+                className="flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm font-medium"
+              >
+                <Trash2 className="w-4 h-4" /> 전체 데이터 초기화
+              </button>
+            </div>
           </div>
 
           {/* Table */}

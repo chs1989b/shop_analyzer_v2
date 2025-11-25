@@ -76,3 +76,7 @@ export const incrementIpUsage = (ip: string) => {
     console.error("Failed to save IP usage", e);
   }
 };
+
+export const resetIpUsage = () => {
+  localStorage.removeItem(IP_STORAGE_KEY);
+};
